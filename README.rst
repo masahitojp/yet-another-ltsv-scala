@@ -2,6 +2,8 @@
 Yet another LTSV Parser implements in Scala
 ###########################################
 
+.. image:: https://secure.travis-ci.org/masahitojp/yet-another-ltsv-scala.png?branch=master
+
 :Original: https://github.com/seratch/ltsv4s/
 
 What's LTSV
@@ -16,6 +18,7 @@ How to try
 Easy try
 
 ::
+
     $ git clone git@github.com:masahitojp/yet-another-ltsv-scala.git ltsv
     $ cd ltsv
     $ sbt console
