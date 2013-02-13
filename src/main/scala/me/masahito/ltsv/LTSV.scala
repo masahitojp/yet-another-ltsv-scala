@@ -1,9 +1,11 @@
 package me.masahito.ltsv
 
+class LTSV  extends LTSVParser with LTSVFormatter {}
 
-object LTSV extends LTSVParser with LTSVFormatter {
+object LTSV{
 
-  // TODO
-  // * parseFile
-  // * formatLists => File
+
+  def apply(): LTSV = {
+    new LTSV
+  }
 }

@@ -13,12 +13,7 @@ object Build extends Build {
       scalaVersion := "2.10.0",
       libraryDependencies ++= Seq(
         // test
-        "org.scalatest" %% "scalatest" % "1.9.1" % "test",
-        "org.scalacheck" %% "scalacheck" % "1.10.0" % "test",
-
-        //log
-        "org.clapper" %% "grizzled-slf4j" % "1.0.1",
-        "ch.qos.logback" % "logback-classic" % "1.0.9"
+        "org.scalatest" %% "scalatest" % "1.9.1" % "test"
       )
       // add other settings here
     )
