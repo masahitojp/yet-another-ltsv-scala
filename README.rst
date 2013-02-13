@@ -1,4 +1,4 @@
-###########################################
+######################################
 Yet another LTSV Manipulator for Scala
 ######################################
 
@@ -42,9 +42,10 @@ Incompatibilities with Original
 Prerequisites
 =============
 
-* Scala 2.10.0
 * JDK6+
+* Scala 2.9.2 or  2.10.0
 
-## License
+License
+=======
 
 Licensed under the Apache License, Version 2.0.
