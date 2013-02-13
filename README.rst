@@ -1,10 +1,15 @@
 ###########################################
-Yet another LTSV Parser implements in Scala
-###########################################
+Yet another LTSV Manipulator for Scala
+######################################
 
 .. image:: https://secure.travis-ci.org/masahitojp/yet-another-ltsv-scala.png?branch=master
 
 :Original: https://github.com/seratch/ltsv4s/
+
+This library is inspired by
+
+* https://metacpan.org/module/Text::LTSV.
+* https://github.com/making/ltsv4j
 
 What's LTSV
 ===========
@@ -28,3 +33,18 @@ How to test
 
 
 To test it use SBT invoke: 'sbt test'
+
+Incompatibilities with Original
+===============================
+
+- add wants/ignores method(inspired by Text::LTSV)
+
+Prerequisites
+=============
+
+* Scala 2.10.0
+* JDK6+
+
+## License
+
+Licensed under the Apache License, Version 2.0.
