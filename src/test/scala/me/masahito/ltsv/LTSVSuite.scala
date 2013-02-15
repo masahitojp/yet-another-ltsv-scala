@@ -71,10 +71,47 @@ class LTSVSuite extends FunSuite {
 
   test("Exception is returned when there is an inaccurate character string.") {
     val ltsvString = "@@:19"
-    val thrown = intercept[IllegalArgumentException] {
+    intercept[IllegalArgumentException] {
       LTSV().ignores("bar").parseLine(ltsvString).left.map(throw _)
     }
   }
 
+  test("Exception is returned when field value don't suported string") {
+    // '\u000B\u000C\u0001-\u0008\u000E-\u00FF'
 
+    val ltsvString = "abc:あいう"
+    intercept[IllegalArgumentException] {
+      LTSV().parseLine(ltsvString).left.map(throw _)
+    }
+  }
+
+  test("Iterator Ascii File") {
+    LTSV().iterator("src/test/resources/test.ltsv"){
+      f => {
+        assert(f.hasNext === true)
+        f.next().right.map(s => {
+         assert(s("a") === "1")
+         assert(s("b") === "2")
+         assert(s("c") === "3")
+        })
+
+        assert(f.hasNext === true)
+        f.next().right.map(s => {
+          assert(s("a") === "4")
+          assert(s("b") === "5")
+          assert(s("c") === "6")
+        })
+
+        assert(f.hasNext === true)
+        f.next().right.map(s => {
+          assert(s("a") === "7")
+          assert(s("b") === "8")
+          assert(s("c") === "9")
+        })
+
+        assert(f.hasNext === false)
+
+      }
+    }
+  }
 }

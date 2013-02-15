@@ -2,6 +2,7 @@ package me.masahito.ltsv
 
 import scala.util.parsing.combinator.RegexParsers
 import scala.IllegalArgumentException
+import java.io.{FileInputStream, InputStreamReader, FileReader, BufferedReader}
 
 /** *
   * Forked at seratch's LTSVParser
@@ -12,6 +13,7 @@ class LTSVParser extends RegexParsers {
   private var _ignores: List[String] = List()
   private var _wants: List[String] = List()
 
+  // --------------------------------------------------------------------------
   // LTSV Definition
   //  ABNF:
   //   ltsv = *(record NL) [record]
@@ -24,6 +26,7 @@ class LTSVParser extends RegexParsers {
   //   NL = [%x0D] %x0A
   //   lbyte = %x30-39 / %x41-5A / %x61-7A / "_" / "." / "-" ;; [0-9A-Za-z_.-]
   //   fbyte = %x01-08 / %x0B / %x0C / %x0E-FF
+  // --------------------------------------------------------------------------
 
   override def skipWhitespace = false
 
@@ -104,6 +107,14 @@ class LTSVParser extends RegexParsers {
     )
   }
 
-  // TODO
-  // def parseFile
+  def iterator[U](fileName:String, parser: LTSVParser = this, charSet: String = "UTF-8")(body:Iterator[Either[Throwable, Map[String, String]]] => U) =  {
+      val in = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), charSet))
+      try{
+        body(new LTSVIterator(in, parser))
+      }
+      finally {
+        in.close()
+      }
+    }
+
 }
