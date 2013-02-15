@@ -16,6 +16,22 @@ class LTSVSuite extends FunSuite {
     )
   }
 
+  test("Parse lines.") {
+
+    val ltsvString = "hoge:foo\tbar:baz\nhoge:foo\tbar:baz"
+    LTSV().parseLines(ltsvString).right.map(
+      result => {
+        assert(result.size === 2)
+
+        result.head.get("hoge").map(s => assert(s === "foo"))
+        result.head.get("bar").map(s => assert(s === "baz"))
+
+        result.last.get("hoge").map(s => assert(s === "foo"))
+        result.last.get("bar").map(s => assert(s === "baz"))
+      }
+    )
+  }
+
   test("It is satisfactory even if there is an empty value. ") {
     val ltsvString = "test:\tbar:baz"
     LTSV().parseLine(ltsvString).right.map(
@@ -85,8 +101,17 @@ class LTSVSuite extends FunSuite {
     }
   }
 
+  test("parse Ascii File") {
+    assert(LTSV().parseFile("src/test/resources/test.ltsv").isRight)
+    LTSV().parseFile("src/test/resources/test.ltsv").right.map(
+      result => {
+        assert(result.size === 3)
+      }
+    )
+  }
+
   test("Iterator Ascii File") {
-    LTSV().iterator("src/test/resources/test.ltsv"){
+    LTSV().parseFileIter("src/test/resources/test.ltsv"){
       f => {
         assert(f.hasNext === true)
         f.next().right.map(s => {

@@ -6,7 +6,7 @@ import java.io.BufferedReader
  * original: http://xerial.org/scala-cookbook/recipes/2012/06/28/reading-files/
  * @param in BufferedReader
  */
-class LTSVIterator (in:BufferedReader, parser: LTSVParser) extends Iterator[Either[Throwable, Map[String, String]]] {
+class LTSVIterator (in:BufferedReader, parser: LTSVParser) extends Iterator[Either[IllegalArgumentException, Map[String, String]]] {
   private var nextLine : String = null
 
   def hasNext = {
