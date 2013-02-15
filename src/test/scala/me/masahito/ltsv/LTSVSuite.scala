@@ -107,6 +107,7 @@ class LTSVSuite extends FunSuite {
     LTSV().parseFile("src/test/resources/test.ltsv").right.map(
       result => {
         assert(result.size === 3)
+        assert(LTSV().formatLines(result).mkString("\n") === "a:1\tb:2\tc:3\na:4\tb:5\tc:6\na:7\tb:8\tc:9")
       }
     )
   }
@@ -115,21 +116,27 @@ class LTSVSuite extends FunSuite {
     LTSV().parseFileIter("src/test/resources/test.ltsv"){
       f => {
         assert(f.hasNext === true)
-        f.next().right.map(s => {
+        val first = f.next()
+        assert(first.isRight)
+        first.right.map(s => {
          assert(s("a") === "1")
          assert(s("b") === "2")
          assert(s("c") === "3")
         })
 
         assert(f.hasNext === true)
-        f.next().right.map(s => {
+        val second = f.next()
+        assert(second.isRight)
+        second.right.map(s => {
           assert(s("a") === "4")
           assert(s("b") === "5")
           assert(s("c") === "6")
         })
 
         assert(f.hasNext === true)
-        f.next().right.map(s => {
+        val third = f.next()
+        assert(third.isRight)
+        third.right.map(s => {
           assert(s("a") === "7")
           assert(s("b") === "8")
           assert(s("c") === "9")
