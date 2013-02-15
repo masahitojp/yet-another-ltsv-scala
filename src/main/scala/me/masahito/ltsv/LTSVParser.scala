@@ -2,7 +2,7 @@ package me.masahito.ltsv
 
 import scala.util.parsing.combinator.RegexParsers
 import scala.IllegalArgumentException
-import java.io.{FileInputStream, InputStreamReader, BufferedReader}
+import java.io.{IOException, FileInputStream, InputStreamReader, BufferedReader}
 import io.Source
 
 /** *
@@ -108,18 +108,28 @@ class LTSVParser extends RegexParsers {
     )
   }
 
-  def parseFile[U](filePath: String, charSet: String = "UTF-8"): Either[IllegalArgumentException, List[Map[String, String]]] = {
-    var source = Source.fromFile(filePath, charSet).mkString
-    parseLines(source)
+  def parseFile[U](filePath: String, charSet: String = "UTF-8"): Either[Throwable, List[Map[String, String]]] = {
+    try{
+      var source = Source.fromFile(filePath, charSet).mkString
+      parseLines(source)
+    }
+    catch {
+      case e: Throwable => throw e
+    }
   }
 
-  def parseFileIter[U](filePath: String, charSet: String = "UTF-8")(body:Iterator[Either[IllegalArgumentException, Map[String, String]]] => U) =  {
-    val in = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), charSet))
+  def parseFileIter[U](filePath: String, charSet: String = "UTF-8")(body:Iterator[Either[Throwable, Map[String, String]]] => U) =  {
     try{
-      body(new LTSVIterator(in, this))
+      val in = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), charSet))
+      try{
+        body(new LTSVIterator(in, this))
+      }
+      finally {
+        in.close()
+      }
     }
-    finally {
-      in.close()
+    catch {
+      case e: Throwable => throw e
     }
   }
 

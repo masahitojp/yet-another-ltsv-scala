@@ -1,6 +1,7 @@
 package me.masahito.ltsv
 
 import org.scalatest.FunSuite
+import java.io.IOException
 
 class LTSVSuite extends FunSuite {
 
@@ -137,6 +138,20 @@ class LTSVSuite extends FunSuite {
         assert(f.hasNext === false)
 
       }
+    }
+  }
+
+  test("Exception is returned when filePath don't exist(parseFileITer)") {
+
+    intercept[IOException] {
+      LTSV().parseFileIter("no_exist.txt"){ f => {}}
+    }
+  }
+
+  test("Exception is returned when filePath don't exist (parseFile)") {
+
+    intercept[IOException] {
+      LTSV().parseFile("no_exist.txt")
     }
   }
 }
