@@ -15,15 +15,22 @@ object YetAnotherLTSVScalaProject extends Build {
         // test
         "org.scalatest" %% "scalatest" % "1.9.1" % "test"
       ),
+
       // add other settings here
-      publishMavenStyle := true,
 
       sbtPlugin := false,
       scalacOptions ++= Seq("-unchecked"),
       publishMavenStyle := true,
+      publishTo <<= version { (v: String) =>
+        val nexus = "https://oss.sonatype.org/"
+        if (v.trim.endsWith("SNAPSHOT"))
+          Some("snapshots" at nexus + "content/repositories/snapshots")
+        else
+          Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+      },
       publishArtifact in Test := false,
-      pomIncludeRepository := { x => false },
-      pomExtra := (
+      pomIncludeRepository := { _ => false },
+      pomExtra :=
         <url>https://github.com/masahitojp/yet-another-ltsv-scala</url>
         <licenses>
           <license>
@@ -43,7 +50,6 @@ object YetAnotherLTSVScalaProject extends Build {
             <url>http://masahito.me/</url>
           </developer>
         </developers>
-      )
     )
   )
 }

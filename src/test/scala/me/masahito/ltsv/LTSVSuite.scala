@@ -7,7 +7,7 @@ class LTSVSuite extends FunSuite {
 
   test("Parse line.") {
 
-    val ltsvString = "hoge:foo\tbar:baz"
+    val ltsvString = "hoge:foo\tbar:baz\n"
     LTSV().parseLine(ltsvString).right.map(
       result => {
         assert(result.size === 2)
