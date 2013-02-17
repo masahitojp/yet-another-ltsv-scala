@@ -57,10 +57,29 @@ Synopsis
      
     # Iterator interface
     LTSV().parseFilIter("./src/test/resources/test.ltsv"){ f =>
-        for(data <- f) {
+        for(result <- f) {
             ...
         }
     }
+
+    val ltsvString = "hoge:foo\tbar:baz"
+    // Parse line with wants.
+    LTSV().wants("bar").parseLine(ltsvString).right.map(
+      result => {
+        assert(result.size === 1)
+        assert( result("bar") === "baz")
+        assert( result.get("hoge") === None)
+      }
+    )
+
+    // Parse line with ignores.
+    LTSV().ignores("bar").parseLine(ltsvString).right.map(
+      result => {
+        assert(result.size === 1)
+        assert( result("hoge") === "foo")
+        assert( result.get("bar") === None)
+      }
+    )
 
 Incompatibilities with Original
 ===============================
